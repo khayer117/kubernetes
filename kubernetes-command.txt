@@ -1,0 +1,107 @@
+### lastest installation
+-- kubectl installation steps
+1. https://kubernetes.io/docs/tasks/tools/install-kubectl/
+2. At the top the page click window tab to get curl path of the kubectl exe.
+3. download the kubectl using web browser
+4. store kubuectl in folder and add path.
+
+-- install minikube
+1. make sure you have install hyper-v. *** Dont forget to start docker service. ****
+2. download minikube installer.exe from. Alays download latest version.
+https://github.com/kubernetes/minikube/releases
+3. add install folder at env path variable
+4. Add hyper-v network switch
+https://medium.com/@JockDaRock/minikube-on-windows-10-with-hyper-v-6ef0f4dc158c
+Check current active ethernet using ps command Get-NetAdapter
+5. Execute below command in PS admin mode (******** important to privide switch name("Minikube Virtual Switch") during starut minikube). 
+Add --alsologtostderr at the end to get error details,
+> minikube start --vm-driver hyperv --hyperv-virtual-switch "Minikube Virtual Switch"
+> minikube dashboard
+minikube start --vm-driver hyperv --alsologtostderr
+
+-- minikube node test project
+https://kubernetes.io/docs/tutorials/hello-minikube/
+
+If error:
+a. unchecked dynamic memory in hyperv image. (https://kubernetes.io/docs/tutorials/hello-minikube/)
+b. Start Docker, restart hyper-v image then run mikube start again.
+b. delete minikube cluster and start again.
+c. update minikube installer.
+d. if waiting for access show long time, delete cluster, delete private switch and create again. Or you can change to default switch from VM, then simply start minikube.
+e. make sure you open power shell in admin mode.
+
+-- Deploy and Run docker images
+1. run using power shell in admin mode
+2. create docker env for minikube
+> minikube docker-env
+> & minikube docker-env | Invoke-Expression
+3. Build docker image from minikube test project
+> docker build -t app-minikube .
+4. Create tag for the image(It's important)
+> docker tag app-minikube app-minikube:v1
+5. run the image in minikube, (Note: port must be the equal with app code expose port, server.js)
+kubectl run app-minikube-test1 --image=app-minikube:v1 --image-pull-policy=Never --port=8080
+6. Verify the app
+> kubectl get pods
+> kubectl get events
+> kubectl get svc #list all services
+
+7. Expose the services
+Different termnal to expose services and api (Need for dashboard access)
+> kubectl proxy
+
+>kubectl get deployments
+app-minikube-test1
+
+-- create service
+> kubectl expose deployment/app-minikube-test1 --type="NodePort" --port 8080
+> kubectl get services
+> kubectl describe services app-minikube-test1
+
+--- test the app from external(from web browser)
+> minikube ip (get minikube ip)
+> curl $(minikube ip):31926  (curl 192.168.0.103:31816)
+Or simple run below command
+> minikube service app-minikube-test1
+
+--- Test app from local inside the pod
+>  kubectl exec -ti app-minikube-test1-7d4895fdcf-jp46k curl localhost:8080
+Node: * id = (pod name) 
+
+
+--- Scaling
+> kubectl scale deployments/app-minikube-test1 --replicas=4
+
+--- Cluster Type services
+> kubectl run app-hello --replicas=3 --labels="run=app-hello-lb" --image=app-minikube:v1 --image-pull-policy=Never --port=8080
+> kubectl expose deployment app-hello --type=LoadBalancer --name=app-hello
+Note: minikube does not include load balancer.
+
+View from browser:
+> minikube service app-hello
+
+
+
+------------- Clean up ----
+## delete deployment
+$ kubectl delete deploy app-minikube-test1
+
+
+
+
+--- some helps
+https://kubernetes.io/docs/tasks/tools/install-kubectl/
+https://medium.com/@JockDaRock/minikube-on-windows-10-with-hyper-v-6ef0f4dc158c
+https://medium.com/@mudrii/kubernetes-local-development-with-minikube-on-hyper-v-windows-10-75f52ad1ed42
+https://github.com/kubernetes/kubernetes/issues/24903
+https://stackoverflow.com/questions/48376928/on-windows-setup-how-can-i-get-docker-image-from-local-machine
+
+--- minikube have no load balancer
+https://stackoverflow.com/questions/44110876/kubernetes-service-external-ip-pending
+
+# kubectl command
+https://kubernetes.io/docs/reference/kubectl/cheatsheet/
+
+--------------
+
+

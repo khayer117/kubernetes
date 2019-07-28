@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: akb-app-deployment
+  labels:
+    app: akb-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: akb-app
+  template:
+    metadata:
+      labels:
+        app: akb-app
+    spec:
+      containers:
+      - name: akb-app
+        image: 435912016443.dkr.ecr.ap-southeast-1.amazonaws.com/bdmapper:v1
+        #imagePullPolicy: Never
+        ports:
+        - containerPort: 8080
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: akb-app-service
+spec:
+  ports:
+    - name: http
+      protocol: TCP
+      port: 8080
+      #targetPort: 30066
+      nodePort: 30069
+  selector:
+    app: akb-app
+  type: LoadBalancer

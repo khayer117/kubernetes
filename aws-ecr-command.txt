@@ -1,0 +1,15 @@
+$(aws ecr get-login --no-include-email --region ap-southeast-1)
+
+docker build -t bdmapper -f EcsSampleApp/Dockerfile .
+docker build -t bdmapper:dev -f EcsSampleApp/Dockerfile .
+
+docker tag bdmapper:dev 435912016443.dkr.ecr.ap-southeast-1.amazonaws.com/bdmapper:dev
+docker push 435912016443.dkr.ecr.ap-southeast-1.amazonaws.com/bdmapper:dev
+
+--- Test in local:
+docker run -p 8889:80 bdmapper:latest
+
+435912016443.dkr.ecr.ap-southeast-1.amazonaws.com/bdmapper:dev
+
+435912016443.dkr.ecr.ap-southeast-1.amazonaws.com/bdmapper:dev
+

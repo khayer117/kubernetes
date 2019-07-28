@@ -1,0 +1,32 @@
+
+https://docs.aws.amazon.com/eks/latest/userguide/getting-started-eksctl.html
+
+#eksctl command
+https://github.com/weaveworks/eksctl/blob/master/README.md
+
+Help:
+https://logz.io/blog/amazon-eks/
+--- Google cloud docs
+https://cloud.google.com/kubernetes-engine/docs/tutorials/configuring-domain-name-static-ip
+
+#cluster creation
+eksctl create cluster --name akb-dev --version 1.12 --nodegroup-name standard-workers --node-type t3.micro --nodes 3 --nodes-min 1 --nodes-max 4 --node-ami auto
+
+docker tag akb-app:latest 435912016443.dkr.ecr.ap-southeast-1.amazonaws.com/bdmapper:v1
+docker push 435912016443.dkr.ecr.ap-southeast-1.amazonaws.com/bdmapper:v1
+
+# scaleing
+> eksctl get cluster
+> eksctl get nodegroup --cluster=akb-dev
+ eksctl scale nodegroup --cluster=akb-dev --nodes=3 --name=standard-workers
+ 
+# Deploying
+> kubectl apply -f deployment-eks.yaml
+ 
+# checking
+>kubectl get svc
+extenalip:post
+a2a8195aa849111e9b96b0a2581338dd-449317397.ap-southeast-1.elb.amazonaws.com:8080
+
+# deleting cluster
+https://docs.aws.amazon.com/eks/latest/userguide/delete-cluster.html
