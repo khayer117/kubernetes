@@ -17,7 +17,7 @@ phases:
     commands:
       - echo Build started on `date`
       - echo Building the Docker image... 
-      - cd ./src
+      - cd ./app-test-k8s
       - $(aws ecr get-login --no-include-email)         
       - docker build -t akb-app:latest .
       - docker tag akb-app:latest 435912016443.dkr.ecr.ap-southeast-1.amazonaws.com/bdmapper:v1
