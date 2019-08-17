@@ -30,3 +30,6 @@ a2a8195aa849111e9b96b0a2581338dd-449317397.ap-southeast-1.elb.amazonaws.com:8080
 
 # deleting cluster
 https://docs.aws.amazon.com/eks/latest/userguide/delete-cluster.html
+
+# official page
+https://eksctl.io/usage/creating-and-managing-clusters

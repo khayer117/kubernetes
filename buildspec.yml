@@ -1,0 +1,30 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      docker: 18
+    commands: 
+      - curl -sS -o kubectl https://amazon-eks.s3-us-west-2.amazonaws.com/1.12.7/2019-03-27/bin/linux/amd64/kubectl
+      - chmod +x ./kubectl
+      - export PATH=$PWD/:$PATH
+  pre_build:
+    commands:
+      - echo Logging in to Amazon ECR...
+      - $(aws ecr get-login --no-include-email --region $AWS_DEFAULT_REGION)
+      - export KUBECONFIG=$HOME/.kube/config
+  build:
+    commands:
+      - echo Build started on `date`
+      - echo Building the Docker image... 
+      - cd ./src
+      - $(aws ecr get-login --no-include-email)         
+      - docker build -t akb-app:latest .
+      - docker tag akb-app:latest 435912016443.dkr.ecr.ap-southeast-1.amazonaws.com/bdmapper:v1
+      - docker push 435912016443.dkr.ecr.ap-southeast-1.amazonaws.com/bdmapper:v1      
+  post_build:
+    commands:
+      - echo Build completed on `date`
+      - aws eks update-kubeconfig --name akb-dev
+      - kubectl apply -f deployment-eks.yaml
+      - echo applied eks deployment `date`

@@ -1,0 +1,15 @@
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+
+metadata:
+  name: akb-dev
+  region: ap-southeast-1
+  version: 1.12
+
+nodeGroups:
+  - name: ng-1
+    instanceType: t3.micro
+    desiredCapacity: 2
+    maxSize: 4
+    minSize: 1
+    ami: auto

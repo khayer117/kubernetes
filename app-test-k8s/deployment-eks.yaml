@@ -17,7 +17,7 @@ spec:
       containers:
       - name: akb-app
         image: 435912016443.dkr.ecr.ap-southeast-1.amazonaws.com/bdmapper:v1
-        #imagePullPolicy: Never
+        imagePullPolicy: Always
         ports:
         - containerPort: 8080
 
