@@ -1,0 +1,36 @@
+-- rabbitmq cloud
+cloudamqp.com
+
+
+-- nodejs basic
+https://www.guru99.com/node-js-tutorial.html
+
+ -- install nodejs express
+ https://code.visualstudio.com/docs/nodejs/nodejs-tutorial
+ https://www.tutorialspoint.com/nodejs/nodejs_express_framework.htm
+ 
+ -- app-sender
+ $ npm install -g express-generator
+ $ express app-sender -view pug
+ $ cd .\app-sender
+ $ npm install
+ $ npm start
+
+-- app-reciver
+$ npm ini //create new project
+
+ --- enable view render
+ $ npm install ejs
+  https://ejs.co/#install
+ https://github.com/mde/ejs/wiki/Using-EJS-with-Express
+
+
+ -- Rabbidmq
+ https://www.rabbitmq.com/tutorials/tutorial-one-javascript.html
+ https://github.com/squaremo/amqp.node
+ api reference: http://www.squaremobius.net/amqp.node/channel_api.html#confirmchannel
+
+ -- promise
+ https://medium.com/dev-bits/writing-neat-asynchronous-node-js-code-with-promises-32ed3a4fd098
+
+

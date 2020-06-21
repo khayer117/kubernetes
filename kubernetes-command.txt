@@ -39,24 +39,14 @@ e. make sure you open power shell in admin mode.
 > docker build -t app-minikube .
 4. Create tag for the image(It's important)
 > docker tag app-minikube app-minikube:v1
-5. run the image in minikube, (Note: port must be the equal with app code expose port, server.js)
-kubectl run app-minikube-test1 --image=app-minikube:v1 --image-pull-policy=Never --port=8080
-6. Verify the app
+
+--- Run the image directly without deployment: Can test only exec the pod directly
+1. run the image in minikube, (Note: port must be the equal with app code expose port, server.js)
+kubectl run app-minikube-test1 --image=app-minikube:v1 --image-pull-policy=Never --port=8090
+2. Verify the app
 > kubectl get pods
 > kubectl get events
 > kubectl get svc #list all services
-
-7. Expose the services
-Different termnal to expose services and api (Need for dashboard access)
-> kubectl proxy
-
->kubectl get deployments
-app-minikube-test1
-
--- create service
-> kubectl expose deployment/app-minikube-test1 --type="NodePort" --port 8080
-> kubectl get services
-> kubectl describe services app-minikube-test1
 
 --- test the app from external(from web browser)
 > minikube ip (get minikube ip)
@@ -64,8 +54,24 @@ app-minikube-test1
 Or simple run below command
 > minikube service app-minikube-test1
 
+--- apply deployment yml
+> kubectl apply -f ./deployment.yaml
+Verify:
+>kubectl get deployments
+akb-app-deployment
+> kubectl get services
+akb-app-service
+> kubectl describe services akb-app-service
+For test:
+> minikube service akb-app-service
+
+7. Expose the services (Need for dashboard access)
+Different termnal to expose services and api
+> kubectl proxy
+
+
 --- Test app from local inside the pod
->  kubectl exec -ti app-minikube-test1-7d4895fdcf-jp46k curl localhost:8080
+>  kubectl exec -ti app-minikube-test1-7d4895fdcf-jp46k curl localhost:8090
 Node: * id = (pod name) 
 
 
@@ -73,7 +79,7 @@ Node: * id = (pod name)
 > kubectl scale deployments/app-minikube-test1 --replicas=4
 
 --- Cluster Type services
-> kubectl run app-hello --replicas=3 --labels="run=app-hello-lb" --image=app-minikube:v1 --image-pull-policy=Never --port=8080
+> kubectl run app-hello --replicas=3 --labels="run=app-hello-lb" --image=app-minikube:v1 --image-pull-policy=Never --port=8090
 > kubectl expose deployment app-hello --type=LoadBalancer --name=app-hello
 Note: minikube does not include load balancer.
 
@@ -84,7 +90,8 @@ View from browser:
 
 ------------- Clean up ----
 ## delete deployment
-$ kubectl delete deploy app-minikube-test1
+> kubectl delete deploy akb-app-service
+> kubectl delete deploy akb-app-deployment
 
 
 
