@@ -25,6 +25,17 @@ $ npm ini //create new project
  https://github.com/mde/ejs/wiki/Using-EJS-with-Express
 
 
+--- Docker: sender
+$ docker build --tag app-sender:v1 .
+$ docker run --publish 3000:3000 --name aps app-sender:v1
+
+
+--- Docker: reciever
+$ docker build --tag app-reciever:v1 .
+$ docker run --name ar app-reciever:v1
+$ docker exec -it ar /bin/bash
+
+
  -- Rabbidmq
  https://www.rabbitmq.com/tutorials/tutorial-one-javascript.html
  https://github.com/squaremo/amqp.node
