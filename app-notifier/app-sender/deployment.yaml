@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-sender-deployment
+  labels:
+    app: app-sender
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: app-sender
+  template:
+    metadata:
+      labels:
+        app: app-sender
+    spec:
+      containers:
+      - name: app-sender
+        image: app-sender:v1
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 3000
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: app-sender-service
+spec:
+  ports:
+    - name: http
+      protocol: TCP
+      port: 3000
+      #targetPort: 30066
+      nodePort: 30075
+  selector:
+    app: app-sender
+  type: NodePort

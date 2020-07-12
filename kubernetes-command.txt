@@ -90,7 +90,7 @@ View from browser:
 
 ------------- Clean up ----
 ## delete deployment
-> kubectl delete deploy akb-app-service
+> kubectl delete service akb-app-service
 > kubectl delete deploy akb-app-deployment
 
 

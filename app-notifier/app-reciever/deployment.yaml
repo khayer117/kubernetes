@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-reciever-deployment
+  labels:
+    app: app-reciever
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: app-reciever
+  template:
+    metadata:
+      labels:
+        app: app-reciever
+    spec:
+      containers:
+      - name: app-reciever
+        image: app-reciever:v1
+        imagePullPolicy: Never
