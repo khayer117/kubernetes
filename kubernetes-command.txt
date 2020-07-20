@@ -109,6 +109,14 @@ https://stackoverflow.com/questions/44110876/kubernetes-service-external-ip-pend
 # kubectl command
 https://kubernetes.io/docs/reference/kubectl/cheatsheet/
 
+# yaml configuration all in one
+https://github.com/kubernetes/examples/blob/master/guestbook/all-in-one/guestbook-all-in-one.yaml
+
+# testing kubernetes:
+https://www.katacoda.com/courses/kubernetes/playground
+https://labs.play-with-k8s.com
+
+
 --------------
 
 
