@@ -118,5 +118,10 @@ https://labs.play-with-k8s.com
 
 
 --------------
+#### ingress controller:
+https://kubernetes.io/docs/concepts/services-networking/ingress-controllers/
+https://github.com/kubernetes-sigs/aws-alb-ingress-controller
+https://kubernetes-sigs.github.io/aws-alb-ingress-controller/
+
 
 

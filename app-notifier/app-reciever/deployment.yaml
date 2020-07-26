@@ -5,7 +5,7 @@ metadata:
   labels:
     app: app-reciever
 spec:
-  replicas: 3
+  replicas: 2
   selector:
     matchLabels:
       app: app-reciever
@@ -18,3 +18,17 @@ spec:
       - name: app-reciever
         image: app-reciever:v1
         imagePullPolicy: Never
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: app-reciever-service
+spec:
+  ports:
+    - name: app-reciever-port
+      port: 4050
+  selector:
+    app: app-reciever
+  type: ClusterIP

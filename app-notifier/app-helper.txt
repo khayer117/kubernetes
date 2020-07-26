@@ -51,6 +51,16 @@ $ kubectl delete deploy app-reciever-deployment
 -- troubleshoot
 $ kubectl logs [pod id]
 
+--- ingress
+-- Hellow world
+# docker driver version of minkube not support ingress.
+https://github.com/kubernetes/minikube/issues/7332
+So to test ingress local, start minikube VM version. Latest minikube is use docker driver and WSL2.
+$ minikube start --vm=true
+
+https://kubernetes.io/docs/tasks/access-application-cluster/ingress-minikube/
+
+
  -- Rabbidmq
  https://www.rabbitmq.com/tutorials/tutorial-one-javascript.html
  https://github.com/squaremo/amqp.node
