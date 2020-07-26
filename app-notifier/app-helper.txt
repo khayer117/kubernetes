@@ -39,8 +39,8 @@ $ docker exec -it ar /bin/bash
 $ minikube docker-env
 $ & minikube docker-env | Invoke-Expression
 $ docker build --tag app-sender:v1 .
-$ docker build --tag app-reciever:v1 .
-$ kubectl apply -f ./deployment.yaml
+$ docker build --tag app-reciever:v1 .      # dont forget change folder
+$ kubectl apply -f ./deployment-{0}.yaml       # for both
 $ kubectl get services
 $ minikube service app-sender-service
 

@@ -1,0 +1,20 @@
+# https://kubernetes.io/docs/tasks/access-application-cluster/ingress-minikube/
+
+$ kubectl create deployment web-default --image=gcr.io/google-samples/hello-app:1.0
+$ kubectl expose deployment web-default --type=NodePort --port=8080
+
+$ kubectl create deployment web-order --image=gcr.io/google-samples/hello-app:1.0
+$ kubectl expose deployment web-order --type=NodePort --port=8080
+
+$ kubectl create deployment web-payment --image=gcr.io/google-samples/hello-app:1.0
+$ kubectl expose deployment web-payment --type=NodePort --port=8080
+
+$ kubectl get ingress
+
+$ minikube ip
+-- Host file entry
+172.28.132.63 bdmapper.com
+172.28.132.63 order.bdmapper.com
+172.28.132.63 payment.bdmapper.com
+
+
