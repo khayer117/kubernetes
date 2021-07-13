@@ -69,4 +69,16 @@ https://kubernetes.io/docs/tasks/access-application-cluster/ingress-minikube/
  -- promise
  https://medium.com/dev-bits/writing-neat-asynchronous-node-js-code-with-promises-32ed3a4fd098
  
+---- kubernetes at docker desktop
+1. Docker > settting > kubernetes > enable kubernetes cluster
+2. Test: kubectl --help
+3. Example deployment: app-test-k8s\deployment-docker-kube.yaml
+4. Ingerss:
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v0.41.2/deploy/static/provider/cloud/deploy.yaml
+https://stackoverflow.com/questions/65193758/enable-ingress-controller-on-docker-desktop-with-wls2
+
+Example:
+app-notifier\ingress\scenerio-ingress-docker-kube.yaml
+ 
+ 
  
