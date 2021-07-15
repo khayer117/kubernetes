@@ -17,4 +17,9 @@ $ minikube ip
 172.28.132.63 order.bdmapper.com
 172.28.132.63 payment.bdmapper.com
 
+-- For Docker desktop kubernetes
+127.0.0.1 kubetest.info
+127.0.0.1 order.kubetest.info
+127.0.0.1 payment.kubetest.info
+
 

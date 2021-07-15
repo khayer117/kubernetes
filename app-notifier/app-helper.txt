@@ -69,7 +69,7 @@ https://kubernetes.io/docs/tasks/access-application-cluster/ingress-minikube/
  -- promise
  https://medium.com/dev-bits/writing-neat-asynchronous-node-js-code-with-promises-32ed3a4fd098
  
----- kubernetes at docker desktop
+#################### kubernetes at docker desktop ########################
 1. Docker > settting > kubernetes > enable kubernetes cluster
 2. Test: kubectl --help
 3. Example deployment: app-test-k8s\deployment-docker-kube.yaml
@@ -79,6 +79,24 @@ https://stackoverflow.com/questions/65193758/enable-ingress-controller-on-docker
 
 Example:
 app-notifier\ingress\scenerio-ingress-docker-kube.yaml
+
+Test ingress(Docker kube):
+- Stop IIS or any other web services except ingress(nginx)
+- Host entry
+127.0.0.1 kubetest.info
+127.0.0.1 order.kubetest.info
+127.0.0.1 payment.kubetest.info
+- From browser
+http://payment.kubetest.info
+http://kubetest.info/payment
+
+-------------------- Kustomization --------------------
+https://kustomize.io
+https://kubectl.docs.kubernetes.io/guides/introduction/kustomize/
+
+Command at Powershell:
+kustomize build overlays\dev-blue-Cluster > test-kube.yaml
+kustomize build overlays\dev-blue-Cluster | kubectl apply -f -
  
  
  
