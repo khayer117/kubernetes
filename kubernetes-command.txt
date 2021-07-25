@@ -94,7 +94,7 @@ View from browser:
 > kubectl delete deploy akb-app-deployment
 
 
-
+docker build -t app-test:v1 -f project-folder/Dockerfile .
 
 --- some helps
 https://kubernetes.io/docs/tasks/tools/install-kubectl/

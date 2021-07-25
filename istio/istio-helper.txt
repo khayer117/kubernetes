@@ -1,0 +1,78 @@
+#### Getting star
+-- Stop host PC IIS and any other web server that using port 80.
+https://istio.io/latest/docs/setup/getting-started
+-- Download istio-[version]-win.zip from https://github.com/istio/istio/releases/tag/1.10.3 (use latest version)
+
+> ./istioctl.exe install --set profile=demo -y (if want to block external request(default ALLOW_ANY): istioctl install --set profile=demo -y --set meshConfig.outboundTrafficPolicy.mode=REGISTRY_ONLY)
+>  kubectl label namespace default istio-injection=enabled
+> kubectl apply -f samples/bookinfo/platform/kube/bookinfo.yaml
+> kubectl get pods
+> kubectl exec [rating pod id] -c ratings -- curl -sS productpage:9080/productpage
+> kubectl apply -f samples/bookinfo/networking/bookinfo-gateway.yaml
+> istioctl analyze
+ 
+-- Getting host and port for Docker kubernetes
+> kubectl get svc istio-ingressgateway -n istio-system
+Host = the external IP column value, for docker kubermentes it "localhost"
+
+> kubectl -n istio-system get service istio-ingressgateway -o json
+Post = Port value of .spec.ports[?(@.name=="http2")].port, for docker kubernetes it's 80
+
+So browser URL: http://localhost/productpage
+
+-- Test from POD:
+1. Findout the container of rating pod.
+> kubectl describe pod/rating-pod-id
+kubectl exec "$SOURCE_POD" -c productpage curl -o /dev/null -sS productpage:9080/productpage
+2. Request productpage serivce from ratings container, rating container have curl install
+> kubectl exec [ratings-pod-id] -c ratings -- curl -sS productpage:9080/productpage
+
+
+## manually inject istio sidecar proxy, execute before kube apply 
+istioctl kube-inject -f samples/sleep/sleep.yaml
+
+######### Kiali dashboard
+> istioctl dashboard kiali
+
+--- PowerShell: Sending buld request
+> for($i = 0; $i -lt 100; $i++){ Invoke-RestMethod  -Uri http://localhost/productpage }
+
+--- build in load generator (https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/)
+kubectl run -i --tty load-generator --rm --image=busybox --restart=Never -- /bin/sh -c "while sleep 0.01; do wget -q -O- http://php-apache; done"
+
+################ Debuging and Loging
+-- Check the log of the sidecar proxy of SOURCE_POD:
+> kubectl logs "$SOURCE_POD_ID" -c istio-proxy   # istio add side car for each pods and those are used as istio-proxy
+
+kubectl describe pod/productpage-v1-8c6b9fcc9-r4v84
+
+######## restarting pods
+kubectl rollout restart deployment [deployment_name
+
+###### Auto scaling HPA ######
+-- Make sure that "Metrics Server" already exist at kube-system name space
+> kubectl get pods -n kube-system
+
+-- If not exist, install kube-system.  Download lastet components.yaml.yaml from https://github.com/kubernetes-sigs/metrics-server/releases
+-- Add "- --kubelet-insecure-tls" at "deployment" section, then apply the components.yaml.
+Reference: https://blog.codewithdan.com/enabling-metrics-server-for-kubernetes-on-docker-desktop
+
+-- Make sure the resource setting at pod deployment yaml
+resources:
+  limits: 
+	cpu: "200m"
+	memory: "1Gi"
+  requests: 
+	cpu: "50m"
+	memory: "500Mi"
+
+--- Apply HorizontalPodAutoscaler yaml(productpage-hpa.yaml)
+> kubectl apply -f productpage-hpa.yaml
+> kubectl get hpa
+
+------- Test:
+--  Apply load to the server
+PS > for($i = 0; $i -lt 100000; $i++){ Invoke-RestMethod  -Uri http://localhost/productpage }
+> kubectl top pods
+> kubectl describe hpa [hpa-name]  # check hpa status and log
+> kubectl get deployments  

@@ -1,3 +1,6 @@
+-- port, targetport and nodeport
+https://stackoverflow.com/questions/49981601/difference-between-targetport-and-port-in-kubernetes-service-definition
+
 -- rabbitmq cloud
 cloudamqp.com
 
@@ -97,6 +100,9 @@ https://kubectl.docs.kubernetes.io/guides/introduction/kustomize/
 Command at Powershell:
 kustomize build overlays\dev-blue-Cluster > test-kube.yaml
 kustomize build overlays\dev-blue-Cluster | kubectl apply -f -
+
+In linux macchine Kustomization is build in, Use below command
+> kubeclt apply -k overlays\dev-blue-Cluster
  
  
  

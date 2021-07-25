@@ -1,0 +1,30 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: ServiceEntry
+metadata:
+  name: google
+spec:
+  hosts:
+  - www.google.com
+  - httpbin.org
+  ports:
+  - number: 443
+    name: https
+    protocol: HTTPS
+  resolution: DNS
+  location: MESH_EXTERNAL
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: ServiceEntry
+metadata:
+  name: local-mssql
+spec:
+  hosts:
+  - localhost
+  addresses:
+  - 172.20.64.1   #host pc ip address
+  ports:
+  - number: 1433
+    name: tcp-mssql
+    protocol: TCP
+  resolution: NONE
+  location: MESH_EXTERNAL
