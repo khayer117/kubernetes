@@ -1,0 +1,44 @@
+Install nginx ingress using helm
+1. Installing Choclaety 
+https://chocolatey.org/install
+
+2. Install help using Chocolatey
+> choco install kubernetes-helm
+https://helm.sh/docs/intro/install/
+
+3. Install kubernetes
+> helm upgrade --install ingress-nginx ingress-nginx --repo https://kubernetes.github.io/ingress-nginx --namespace ingress-nginx --create-namespace
+
+4. Verify
+> kubectl get pods --namespace ingress-nginx
+kubectl get service ingress-nginx-controller -n ingress-nginx  --- Check assign IP
+
+Test:
+kubectl create deployment demo --image=httpd --port=80
+kubectl expose deployment demo
+kubectl create ingress demo-localhost --class=nginx --rule="demo.localdev.me/*=demo:80"
+kubectl get ingress
+kubectl port-forward --namespace=ingress-nginx service/ingress-nginx-controller 8088:80
+
+http://demo.localdev.me:8088
+
+Test 2: 
+app-notifier\ingress\scenerio.txt
+
+References:
+Basic: https://kubernetes.github.io/ingress-nginx/deploy/#docker-desktop
+Documentation: https://kubernetes.io/docs/concepts/services-networking/ingress/#default-ingress-class
+https://docs.nginx.com/nginx-ingress-controller/intro/overview/
+https://github.com/kubernetes/ingress-nginx
+
+https://www.ibm.com/cloud/blog/kubernetes-ingress
+https://medium.com/swlh/kubernetes-ingress-controller-overview-81abbaca19ec
+
+# enable engress at docker desk top
+https://stackoverflow.com/questions/65193758/enable-ingress-controller-on-docker-desktop-with-wls2
+
+
+
+
+
+
