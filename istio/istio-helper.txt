@@ -57,6 +57,10 @@ kubectl rollout restart deployment [deployment_name
 -- Add "- --kubelet-insecure-tls" at "deployment" section, then apply the components.yaml.
 Reference: https://blog.codewithdan.com/enabling-metrics-server-for-kubernetes-on-docker-desktop
 
+[Update]: https://github.com/kubernetes-sigs/metrics-server
+- Download : https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
+- Add arg:   "- --kubelet-insecure-tls" at "deployment" section, then apply.
+
 -- Make sure the resource setting at pod deployment yaml
 resources:
   limits: 
@@ -65,6 +69,11 @@ resources:
   requests: 
 	cpu: "50m"
 	memory: "500Mi"
+	
+--- make sure install hpa api version : 
+> kubectl api-versions
+Update version for docker kubernetes: apiVersion: autoscaling/v2
+
 
 --- Apply HorizontalPodAutoscaler yaml(productpage-hpa.yaml)
 > kubectl apply -f productpage-hpa.yaml
