@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: akb-app
+  labels:
+    app: akb-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: akb-app
+  template:
+    metadata:
+      labels:
+        app: akb-app
+    spec:
+      containers:
+      - name: akb-app
+        image: localhost:32000/akb-app:registry
+        ports:
+        - containerPort: 8090
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: akb-app
+spec:
+  ports:
+    - name: akb-app
+      #protocol: TCP
+      port: 8090    # testing http://cluster-ip:port
+      #targetPort: 30066
+      nodePort: 30069  # exposing excernal: localhost:30069 or host-ip:30069
+  selector:
+    app: akb-app
+  type: NodePort

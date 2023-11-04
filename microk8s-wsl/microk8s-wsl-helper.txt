@@ -1,0 +1,63 @@
+
+## Windows docker installation notes, otherwise wsl kubernative giving mounding error. Docker will have installall custom location.
+"Docker Desktop Installer.exe" install --accept-license --installation-dir=C:\Docker
+
+-- Pod log
+>kubectl logs mypod --all-containers
+
+### installing microk8s at WSL ###########
+https://www.youtube.com/watch?v=D46VybHqe0M
+https://microk8s.io
+
+> sudo apt-get install snap
+> sudo snap install microk8s --classic
+
+--- Test
+> sudo microk8s status --wait-ready
+> sudo microk8s enable ingress
+
+> alias mk="sudo microk8s kubectl"
+
+PS > Set-Alias kt kubectl
+
+
+### use wsl microk8s from windows kubectl, creating profie ###
+# export WSL micok8s config
+> sudo microk8s config > mkconfig
+# Copy mkconfig to .kube/ location. (assume kubectl is already install)
+
+# Backup existing .kube/config file.
+ps> $env:KUBECONFIG="C:\Users\khaye\.kube\config;C:\Users\khaye\.kube\mkconfig"	
+ps> kubectl config view  --flatten > C:\Users\khaye\.kube\config_tmp
+# rename config_tmp to config
+ps> kubectl config get-context
+ps> kubectl config use-context microk8s
+
+## kubernetes prometheus: kubernates loging
+https://devopscube.com/setup-prometheus-monitoring-on-kubernetes/
+
+ExecStart=/usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock -H tcp://0.0.0.0:2375
+
+ps> wsl -- ip addr list eth0   (wsl hostname -I)
+WSL: 172.20.171.199
+DOCKER_HOST = 'tcp://172.20.171.199:2375'  # env system variable
+
+#### Image Regsitry:
+https://microk8s.io/docs/registry-built-in
+> sudo microk8s enable registry:size=20Gi
+-- pushing image to registry
+> docker build . -t localhost:32000/akb-app:registry
+> docker push localhost:32000/akb-app:registry
+$$yaml image: localhost:32000/akb-app:registry  (imagePullPolicy should not None)
+
+> microk8s ctr images ls (working but unfortunnately not lising, need to explore)
+
+-- Test proj: kubernetes\app-test-k8s\deployment-microk8s.yaml
+-- imagePullPolicy should be default, never used "IfNotPresent"
+
+microk8s.kubectl expose deployment/akb-app-deployment --type=NodePort --port 8088
+
+## forwarding kube service port to external
+>kubectl port-forward service/akb-app-service 8090:8090
+
+
